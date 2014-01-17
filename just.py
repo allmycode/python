@@ -1,3 +1,7 @@
+#!/usr/bin/python
+# To run this program you should install python 2.7
+# and type in command line > python just.py <input_file> <output_file> [<columns>=80]
+
 def format(acc, out, red, N):
     chars = reduce(lambda chars, w: chars + len(w), acc, 0) + (4 if red else 0)
     total_spaces = len(acc)-1
@@ -26,9 +30,6 @@ def format(acc, out, red, N):
     out.write('\n')
     return out
 
-#input = open('lorem.txt').read()
-#output = open('res.txt', 'w')
-
 def format_paragraph(p, output, N):
 #    print "Processing: ", p
     acc = list()
@@ -45,7 +46,7 @@ def format_paragraph(p, output, N):
     format(acc, output, red, N)
     return output
 
-def process_text(input, output, N):
+def format_text(input, output, N):
     start = 0
     lastpos = -1;
     last = None
@@ -77,7 +78,7 @@ def main():
     output = open(argv[2], 'w') if len(argv) > 2 and argv[2] != '-' else stdout
     N = int(argv[3]) if len(argv) > 3 else 80    
     
-    process_text(input, output, N)
+    format_text(input, output, N)
 
 def test_format_paragraph(text, N):
     from StringIO import StringIO
@@ -91,6 +92,6 @@ def tests():
     check(test_format_paragraph('Lorem ipsum', 20), '    Lorem      ipsum\n')
 
 if __name__ == "__main__":
-    tests()
-    #main()
+    #tests()
+    main()
         
