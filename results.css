@@ -1,0 +1,27 @@
+.name {
+    color: green;
+}
+.attributes {
+    font-size: 11pt;
+    font-family: Helvetica
+}
+.aname {
+    color: blue;
+}
+.attr-subscription_id {
+    font-size: 10;
+}
+.attr-streaming_id {
+    font-weight: bold;
+}
+.attr-request {
+    font-size: 8;
+}
+.attr-user_id {
+    font-weight: bold;
+    color:red;
+}
+.attr-premium {
+    font-size: 4;
+    color:darkblue;
+}
