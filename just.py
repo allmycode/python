@@ -4,42 +4,39 @@
 
 def format(acc, out, red, N):
     chars = reduce(lambda chars, w: chars + len(w), acc, 0) + (4 if red else 0)
-    total_spaces = len(acc)-1
-    delta = max(0, N - chars - total_spaces)
-    if total_spaces > 0:
-        all = delta / total_spaces
-        right = delta % total_spaces
+    total_gaps = len(acc)-1
+    if total_gaps > 0:
+        delta = max(0, N - chars - total_gaps)
+        gap = delta / total_gaps
+        right_gaps = delta % total_gaps
     else:
-        all = -1
-        right = 0
+        gap = -1
+        right_gaps = 0
 
     if red: out.write('    ')
 
-    if chars + total_spaces < N/2:
+    if chars + total_gaps <= N/2:
         out.write(" ".join(acc))
-        out.write("\n")
-        return
-
-    spaces = total_spaces
-    for i in xrange(0, len(acc)):
-        out.write(acc[i])
-        if spaces != 0:
-            out.write(' '*(all+1))
-            if spaces <= right: out.write(' ')
-            spaces -= 1
+    else:
+        gaps = total_gaps
+        for w in acc:
+            out.write(w)
+            if gaps > 0:
+                out.write(' '*(1+gap+(1 if gaps <= right_gaps else 0)))
+                gaps -= 1
     out.write('\n')
     return out
 
 def format_paragraph(p, output, N):
-#    print "Processing: ", p
-    acc = list()
-    chars = 4
+    #print "Processing: ", "'" + p + "'"
+    acc = []
+    chars = 4 # red string
     red = True
     for w in p.split():
         if len(w) + chars + 1 > N:
             format(acc, output, red, N)
-            if red: red = None
-            acc = list()
+            red = None
+            acc[:] = []
             chars = 0
         acc.append(w)
         chars += len(w) + 1
@@ -50,7 +47,7 @@ def format_text(input, output, N):
     start = 0
     lastpos = -1;
     last = None
-    for i, c in enumerate(input):
+    for i, c in enumerate(input+"\n"):
         if c == '.':
             last = 'd'
             lastpos = i 
@@ -61,14 +58,12 @@ def format_text(input, output, N):
             elif last == 'n':
                 format_paragraph(input[start:lastpos], output, N)
                 if i - lastpos > 1: 
-                    format_paragraph(input[lastpos:i], output, N)
-                    start = i
+                   output.write(input[lastpos+1:i] + '\n')
+                start = i
             last ='n'
             lastpos = i
         elif c != ' ' and c != '\t':
-            last = 'c'
-
-    format_paragraph(input[start:], output, N)
+            last = None
     return output
 
 def main():
